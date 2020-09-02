@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 struct Empty;
 
 impl Iterator for Empty {
@@ -100,7 +102,8 @@ where
 
 fn print_iterator<I>(name: &str, iter: &mut I)
 where
-    I: Iterator<Item = u32>,
+    I: Iterator,
+    I::Item: Display,
 {
     println!("{}", name);
     for n in iter {
