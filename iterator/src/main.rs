@@ -79,6 +79,25 @@ where
     }
 }
 
+struct Doubler2<I> {
+    iter: I,
+}
+
+impl<I> Iterator for Doubler2<I>
+where
+    I: Iterator,
+    I::Item: std::ops::Add<Output = I::Item> + Copy,
+{
+    type Item = I::Item;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.iter.next() {
+            Some(n) => Some(n + n),
+            None => None,
+        }
+    }
+}
+
 fn print_iterator<I>(name: &str, iter: &mut I)
 where
     I: Iterator<Item = u32>,
@@ -95,4 +114,5 @@ fn main() {
     print_iterator("Ten", &mut Ten::new());
     print_iterator("Fib", &mut Fib::new().take(10));
     print_iterator("Doubler", &mut Doubler::new(Ten::new()));
+    print_iterator("Doubler2", &mut Doubler2 { iter: Ten::new() });
 }
